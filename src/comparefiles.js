@@ -1,21 +1,26 @@
 import _ from 'lodash';
 
+const getSortedKeys = (obj1, obj2) => {
+  const keys1 = _.keys(obj1);
+  const keys2 = _.keys(obj2);
+  const unionKeys = _.union(keys1, keys2);
+  const sortedKeys = _.sortBy(unionKeys);
+  return sortedKeys;
+};
 
-
-const compareFiles = (obj1, obj2) => {
-    const keys = [...new Set([...Object.keys(obj1), ...Object.keys(obj2)])].sort();
-
+const compareFiles = (data1, data2) => {
+  const keys = getSortedKeys(data1, data2);
   const result = keys.map((key) => {
-    if (!Object.hasOwn(obj1, key)) {
-      return ` + ${key}: ${obj2[key]}`;
+    if (!Object.hasOwn(data1, key)) {
+      return ` + ${key}: ${data2[key]}`;
     }
-    if (!Object.hasOwn(obj2, key)) {
-        return ` - ${key}: ${obj1[key]}`;
+    if (!Object.hasOwn(data2, key)) {
+        return ` - ${key}: ${data1[key]}`;
     } 
-    if (obj1[key] !== obj2[key]) {
-        return ` - ${key}: ${obj1[key]}\n + ${key}: ${obj2[key]}`;
+    if (data1[key] !== data2[key]) {
+        return ` - ${key}: ${data1[key]}\n + ${key}: ${data2[key]}`;
     } 
-    return ` - ${key}: ${obj1[key]}`;
+    return ` - ${key}: ${data1[key]}`;
     });
     return `{\n${result.join('\n')}\n}`;
 }
