@@ -15,14 +15,14 @@ const compareFiles = (data1, data2) => {
       return ` + ${key}: ${data2[key]}`;
     }
     if (!Object.hasOwn(data2, key)) {
-        return ` - ${key}: ${data1[key]}`;
-    } 
+      return ` - ${key}: ${data1[key]}`;
+    }
     if (data1[key] !== data2[key]) {
-        return ` - ${key}: ${data1[key]}\n + ${key}: ${data2[key]}`;
-    } 
+      return ` - ${key}: ${data1[key]}\n + ${key}: ${data2[key]}`;
+    }
     return ` - ${key}: ${data1[key]}`;
-    });
-    return `{\n${result.join('\n')}\n}`;
-}
-  
+  });
+  return `{\n${result.join('\n')}\n}`;
+};
+
 export default compareFiles;
