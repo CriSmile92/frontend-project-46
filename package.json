@@ -1,6 +1,10 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "description": "[![Actions Status](https://github.com/CriSmile92/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/CriSmile92/frontend-project-46/actions)",
   "homepage": "https://github.com/CriSmile92/frontend-project-46#readme",
   "bugs": {
@@ -12,7 +16,6 @@
   },
   "license": "ISC",
   "author": "Cristina Cobzun",
-  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
