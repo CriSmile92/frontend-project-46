@@ -3,7 +3,6 @@
 
 [![hexlet-check](https://github.com/CriSmile92/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/CriSmile92/frontend-project-46/actions/workflows/hexlet-check.yml)
 
-
-SONAR_QUBE
+{{ secrets.SONAR_QUBE }}
 
 https://asciinema.org/a/762604
