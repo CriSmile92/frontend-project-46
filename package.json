@@ -1,10 +1,6 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "type": "module",
-  "bin": {
-    "gendiff": "bin/gendiff.js"
-  },
   "description": "[![Actions Status](https://github.com/CriSmile92/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/CriSmile92/frontend-project-46/actions)",
   "homepage": "https://github.com/CriSmile92/frontend-project-46#readme",
   "bugs": {
@@ -16,31 +12,38 @@
   },
   "license": "ISC",
   "author": "Cristina Cobzun",
+  "type": "module",
   "main": "index.js",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
     "commander": "^14.0.2"
   },
-  "lint-staged": {
-    "*.js": "eslint --fix"
-  },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.34.0",
     "@jest/globals": "^30.0.5",
     "@stylistic/eslint-plugin": "^5.2.3",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^30.2.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.3.0",
-    "jest": "^30.0.5",
+    "jest": "^30.2.0",
     "lint-staged": "^16.1.5",
     "npm-check-updates": "^18.0.2",
     "release-it": "^19.0.4",
     "simple-git-hooks": "^2.13.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix"
   }
 }

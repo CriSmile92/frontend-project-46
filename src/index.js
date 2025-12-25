@@ -2,8 +2,12 @@ import fs from 'fs'
 import path from 'path'
 import parsers from './parsers.js'
 import _ from 'lodash'
+import printTree from './formatters/stylish.js'
+import buildDiff from './formatters/plain.js'
 
-const genDiff = (filepath1, filepath2) => {
+
+
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const content1 = fs.readFileSync(path.resolve(filepath1), 'utf-8')
   const content2 = fs.readFileSync(path.resolve(filepath2), 'utf-8')
 
@@ -13,45 +17,9 @@ const genDiff = (filepath1, filepath2) => {
   const parsedData1 = parsers(content1, extname1)
   const parsedData2 = parsers(content2, extname2)
 
-  const allKeys = _.union(Object.keys(parsedData1), Object.keys(parsedData2))
-  const diff = {}
+  const diffTree = buildDiff(parsedData1, parsedData2, format)
 
-  allKeys.forEach((key) => {
-    const hasKey1 = Object.prototype.hasOwnProperty.call(parsedData1, key)
-    const hasKey2 = Object.prototype.hasOwnProperty.call(parsedData2, key)
-
-    const val1 = parsedData1[key]
-    const val2 = parsedData2[key]
-
-    if (!hasKey1) {
-      diff[key] = { status: 'added', value: val2 }
-    } else if (!hasKey2) {
-      diff[key] = { status: 'removed', value: val1 }
-    } else if (val1 !== val2) {
-      diff[key] = {
-        status: 'changed',
-        value: val2,
-        oldValue: val1,
-      }
-    } else {
-      diff[key] = { status: 'unchanged', value: val1 }
-    }
-  })
-
-  const lines = Object.entries(diff).map(([key, info]) => {
-    switch (info.status) {
-      case 'added':
-        return `+ ${key}: ${info.value}`
-      case 'removed':
-        return `- ${key}: ${info.value}`
-      case 'changed':
-        return `- ${key}: ${info.oldValue}\n+ ${key}: ${info.value}`
-      case 'unchanged':
-        return `  ${key}: ${info.value}`
-      default:
-        return ''
-    }
-  })
-  return ['{', ...lines, '}'].join('\n')
+  return printTree(diffTree)
 }
+
 export default genDiff
