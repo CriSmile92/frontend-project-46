@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import parsers from './parsers.js'
 import _ from 'lodash'
-import printTree from './formatters/stylish.js'
-import buildDiff from './formatters/plain.js'
+import formatData from './formatters/index.js'
+import buildDiff from './diff.js'
 
 
 
@@ -17,9 +17,9 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const parsedData1 = parsers(content1, extname1)
   const parsedData2 = parsers(content2, extname2)
 
-  const diffTree = buildDiff(parsedData1, parsedData2, format)
+  const diffTree = buildDiff(parsedData1, parsedData2)
 
-  return printTree(diffTree)
+  return formatData(diffTree, format)
 }
 
 export default genDiff

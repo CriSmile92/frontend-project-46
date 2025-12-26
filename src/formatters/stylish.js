@@ -16,11 +16,11 @@ const valueToString = (value, depth) => {
   return String(value);
 };
 
-const printTree = (tree, depth = 1) => {
+const formatStylish = (tree, depth = 1) => {
   const lines = Object.entries(tree).map(([key, node]) => {
     switch (node.status) {
       case 'nested':
-        return `${getIndent(depth, ' ')}  ${key}: ${printTree(node.children, depth + 1)}`;
+        return `${getIndent(depth, ' ')}  ${key}: ${formatStylish(node.children, depth + 1)}`;
       case 'added':
         return `${getIndent(depth)}+ ${key}: ${valueToString(node.value, depth + 1)}`;
       case 'removed':
@@ -39,4 +39,4 @@ const printTree = (tree, depth = 1) => {
   return `{\n${lines.join('\n')}\n${' '.repeat((depth - 1) * indentSize)}}`;
 };
 
-export default printTree
+export default formatStylish
