@@ -9,3 +9,7 @@ lint:
 
 test:
 	npx jest
+
+test2:
+	npm test -- --coverage --coverageProvider=v8
+
