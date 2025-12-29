@@ -16,7 +16,6 @@ const buildDiff = (obj1, obj2) => {
     } else if (!hasKey2) {
       result[key] = { status: 'removed', value: val1 }
     } else if (_.isObject(val1) && _.isObject(val2)) {
-      // если оба объекта — рекурсивно сравниваем
       result[key] = { status: 'nested', children: buildDiff(val1, val2) }
     } else if (val1 !== val2) {
       result[key] = {
