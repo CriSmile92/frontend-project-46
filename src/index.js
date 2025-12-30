@@ -7,9 +7,9 @@ import buildDiff from './diff.js'
 
 
 const genDiff = (filePath1, filePath2, format = 'stylish') => {
-const buildFullPath = (filepath) => path.isAbsolute ? path.resolve(filepath) : path.resolve(process.cwd(),filepath)
-const readFile = (filePath) => fs.readFileSync(filePath, 'UTF-8');
-const getFileFormat = (filePath) => path.extname(filePath).slice(1);
+const buildFullPath = (filepath) => path.isAbsolute(filepath) ? path.resolve(filepath) : path.resolve(process.cwd(),filepath)
+const readFile = (filepath) => fs.readFileSync(filepath, 'UTF-8');
+const getFileFormat = (filepath) => path.extname(filepath).slice(1);
 
   /*const folderPath = './__fixtures__'
 fs.readdir(folderPath, (err, files) => {
