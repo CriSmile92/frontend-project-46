@@ -18,8 +18,8 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "jest"
-  },
+  "test": "jest --coverage"
+},
   "dependencies": {
     "commander": "^14.0.2"
   },
