@@ -5,14 +5,14 @@ import formatJson from './json.js'
 const formatData = (node, format) => {
   switch (format) {
     case 'stylish':
-      return formatStylish(node);
+      return formatStylish(node)
     case 'plain':
-      return formatPlain(node);
+      return formatPlain(node)
     case 'json':
-      return formatJson(node);
+      return formatJson(node)
     default:
-      throw new Error(`Unknown format: '${format}'!`);
+      throw new Error(`Unknown format: '${format}'!`)
   }
-};
+}
 
-export default formatData;
+export default formatData

@@ -1,42 +1,38 @@
-import _ from 'lodash'
-
-const indentSize = 4;
-
-const getIndent = (depth, sign = ' ') => ' '.repeat(depth * indentSize - 2) + sign + ' ';
-
-const valueToString = (value, depth) => {
-  if (_.isObject(value)) {
-    const indent = getIndent(depth);
-    const lines = Object.entries(value).map(
-      ([key, val]) => `${indent}${key}: ${valueToString(val, depth + 1)}`
-    );
-    const braceIndent = ' '.repeat((depth - 1) * indentSize);
-    return `{\n${lines.join('\n')}\n${braceIndent}}`;
+const getIndent = depth => ' '.repeat(depth * 4 - 2)
+const stringify = (value, depth) => {
+  if (typeof value !== 'object' || value === null) {
+    return String(value)
   }
-  return String(value);
-};
+  const indent = getIndent(depth + 1)
+  const entries = Object.entries(value)
+    .map(([key, val]) => `${indent}  ${key}: ${stringify(val, depth + 1)}`)
+    .join('\n')
+  return `{\n${entries}\n${getIndent(depth)}  }`
+}
 
-const formatStylish = (tree, depth = 1) => {
-  const lines = Object.entries(tree).map(([key, node]) => {
-    switch (node.status) {
+const getStylish = (diffTree, depth = 1) => {
+  const indent = getIndent(depth)
+  const result = diffTree.map((node) => {
+    const { key, type } = node
+    switch (type) {
       case 'nested':
-        return `${getIndent(depth, ' ')}  ${key}: ${formatStylish(node.children, depth + 1)}`;
+        return `${indent}  ${key}: {\n${getStylish(node.children, depth + 1)}\n${indent}  }`
       case 'added':
-        return `${getIndent(depth)}+ ${key}: ${valueToString(node.value, depth + 1)}`;
+        return `${indent}+ ${key}: ${stringify(node.value, depth)}`
       case 'removed':
-        return `${getIndent(depth)}- ${key}: ${valueToString(node.value, depth + 1)}`;
+        return `${indent}- ${key}: ${stringify(node.value, depth)}`
       case 'changed':
-        return [
-          `${getIndent(depth)}- ${key}: ${valueToString(node.oldValue, depth + 1)}`,
-          `${getIndent(depth)}+ ${key}: ${valueToString(node.value, depth + 1)}`
-        ].join('\n');
+        return `${indent}- ${key}: ${stringify(node.oldValue, depth)}\n${indent}+ ${key}: ${stringify(node.newValue, depth)}`
       case 'unchanged':
-        return `${getIndent(depth)}  ${key}: ${valueToString(node.value, depth + 1)}`;
+        return `${indent}  ${key}: ${stringify(node.value, depth)}`
       default:
-        return '';
+        throw new Error(`Unknown type: ${type}`)
     }
-  });
-  return `{\n${lines.join('\n')}\n${' '.repeat((depth - 1) * indentSize)}}`;
-};
+  })
+
+  return result.join('\n')
+}
+
+const formatStylish = diffTree => `{\n${getStylish(diffTree)}\n}`
 
 export default formatStylish

@@ -1,33 +1,33 @@
-import _ from 'lodash'
+const getSortedKeys = (obj1, obj2) => {
+  const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)])
+  /* eslint-disable */
+	return [...allKeys].sort()
+	/* eslint-enable */
+}
 
 const buildDiff = (obj1, obj2) => {
-  const allKeys = _.union(Object.keys(obj1), Object.keys(obj2))
-  const result = {}
+  const keys = getSortedKeys(obj1, obj2)
 
-  allKeys.forEach((key) => {
-    const hasKey1 = Object.prototype.hasOwnProperty.call(obj1, key)
-    const hasKey2 = Object.prototype.hasOwnProperty.call(obj2, key)
+  return keys.map((key) => {
+    const value1 = obj1[key]
+    const value2 = obj2[key]
 
-    const val1 = obj1[key]
-    const val2 = obj2[key]
-
-    if (!hasKey1) {
-      result[key] = { status: 'added', value: val2 }
-    } else if (!hasKey2) {
-      result[key] = { status: 'removed', value: val1 }
-    } else if (_.isObject(val1) && _.isObject(val2)) {
-      result[key] = { status: 'nested', children: buildDiff(val1, val2) }
-    } else if (val1 !== val2) {
-      result[key] = {
-        status: 'changed',
-        value: val2,
-        oldValue: val1,
-      }
-    } else {
-      result[key] = { status: 'unchanged', value: val1 }
+    if (typeof value1 === 'object' && value1 !== null && typeof value2 === 'object' && value2 !== null) {
+      return { key, type: 'nested', children: buildDiff(value1, value2) }
     }
+    if (!(key in obj2)) {
+      return { key, type: 'removed', value: value1 }
+    }
+    if (!(key in obj1)) {
+      return { key, type: 'added', value: value2 }
+    }
+    if (value1 !== value2) {
+      return {
+        key, type: 'changed', oldValue: value1, newValue: value2,
+      }
+    }
+    return { key, type: 'unchanged', value: value1 }
   })
-
-  return result
 }
+
 export default buildDiff

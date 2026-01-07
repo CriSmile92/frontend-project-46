@@ -1,26 +1,27 @@
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import genDiff from '../index.js';
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+import { test, expect } from '@jest/globals'
+import genDiff from '../src/index.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename)
+const readFixture = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8')
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+// eslint-disable-next-line no-undef
+describe('genDiff', () => {
+  test('JSON format', () => {
+    expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), 'json'))
+      .toEqual(readFixture('result_json.txt'))
+  })
 
-test('Nested JSON files 1 in Stylish format', () => {
-  expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'))).toEqual(readFile('result_stylish.txt').trim());
-});
+  test('plain format', () => {
+    expect(genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'), 'plain'))
+      .toEqual(readFixture('result_plain.txt'))
+  })
 
-test('Nested flat YAML files in Stylish format', () => {
-  expect(genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'))).toEqual(readFile('result_stylish.txt').trim());
-});
-
-test('Nested JSON files in Plain format', () => {
-  expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), 'plain')).toEqual(readFile('result_plain.txt').trim());
-});
-
-test('Nested JSON files in Json format', () => {
-  expect(genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), 'json')).toEqual(readFile('result_json.txt').trim());
-});
+  test('stylish format', () => {
+    expect(genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'), 'stylish'))
+      .toEqual(readFixture('result_stylish.txt'))
+  })
+})
