@@ -1,8 +1,7 @@
 const getSortedKeys = (obj1, obj2) => {
   const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)])
-  /* eslint-disable */
+  // eslint-disable-next-line
 	return [...allKeys].sort()
-	/* eslint-enable */
 }
 
 const buildDiff = (obj1, obj2) => {
